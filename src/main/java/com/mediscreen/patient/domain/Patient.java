@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Class materializing a patient.
@@ -33,9 +33,9 @@ public class Patient implements Serializable {
 
     @Size(max = 125, message = "Maximum length = 125 characters")
     @NotBlank(message = "DateOfBirth is mandatory")
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dateOfBirth;
+    @Column(nullable = false, columnDefinition = "DATE")
+    //@Temporal(TemporalType.DATE)
+    private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
     @NotBlank(message = "Sex is mandatory")
@@ -55,13 +55,17 @@ public class Patient implements Serializable {
     public Patient() {
     }
 
-    public Patient(@Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "LastName is mandatory") String lastName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "FirstName is mandatory") String firstName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "DateOfBirth is mandatory") Date dateOfBirth, @NotBlank(message = "Sex is mandatory") Sex sex, @Size(max = 255, message = "Maximum length = 255 characters") @NotBlank(message = "HomeAddress is mandatory") String homeAddress, @NotBlank(message = "PhoneNumber is mandatory") @Pattern(regexp = "^(\\d{3})(\\d{3})(\\d{4}).-", message = "Phone Number : 111-111-1111") String phoneNumber) {
+    public Patient(@Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "LastName is mandatory") String lastName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "FirstName is mandatory") String firstName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "DateOfBirth is mandatory") LocalDate dateOfBirth, @NotBlank(message = "Sex is mandatory") Sex sex, @Size(max = 255, message = "Maximum length = 255 characters") @NotBlank(message = "HomeAddress is mandatory") String homeAddress, @NotBlank(message = "PhoneNumber is mandatory") @Pattern(regexp = "^(\\d{3})(\\d{3})(\\d{4}).-", message = "Phone Number : 111-111-1111") String phoneNumber) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.homeAddress = homeAddress;
         this.phoneNumber = phoneNumber;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
     public long getId() {
@@ -88,11 +92,11 @@ public class Patient implements Serializable {
         this.firstName = firstName;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
