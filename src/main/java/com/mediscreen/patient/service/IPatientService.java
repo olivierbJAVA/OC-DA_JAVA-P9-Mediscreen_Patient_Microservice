@@ -45,4 +45,13 @@ public interface IPatientService {
      */
     List<Patient> findAllPatients();
 
+    /**
+     * Update a patient.
+     *
+     * @param patient The patient to update
+     * @return The patient updated
+     * @throws ResourceNotFoundException if the patient to update does not exist
+     */
+    Patient updatePatient(Patient patient) throws ResourceNotFoundException;
+
 }

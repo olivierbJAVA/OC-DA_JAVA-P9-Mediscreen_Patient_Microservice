@@ -79,4 +79,18 @@ public class PatientServiceImpl implements IPatientService {
     public List<Patient> findAllPatients() {
         return patientRepository.findAll();
     }
+
+    /**
+     * Update a patient.
+     *
+     * @param patient The patient to update
+     * @return The patient updated
+     * @throws ResourceNotFoundException if the patient to update does not exist
+     */
+    public Patient updatePatient(Patient patient) throws ResourceNotFoundException {
+
+        patientRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException(patient.getId()));
+
+        return patientRepository.save(patient);
+    }
 }
