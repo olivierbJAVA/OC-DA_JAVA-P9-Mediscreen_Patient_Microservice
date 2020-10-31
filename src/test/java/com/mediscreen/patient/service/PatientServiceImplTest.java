@@ -144,4 +144,32 @@ public class PatientServiceImplTest {
         verify(mockPatientRepository, times(1)).findAll();
         assertEquals(listPatientsToFind, listPatientsFound);
     }
+
+    @Test
+    public void updatePatient_whenIdExist() {
+        // ARRANGE
+        Patient patientToUpdate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToUpdate.setId(1L);
+        doReturn(Optional.of(patientToUpdate)).when(mockPatientRepository).findById(1L);
+        doReturn(patientToUpdate).when(mockPatientRepository).save(patientToUpdate);
+
+        // ACT
+        Patient patientUpdated = patientServiceImplUnderTest.updatePatient(patientToUpdate);
+
+        // ASSERT
+        verify(mockPatientRepository, times(1)).save(patientToUpdate);
+        assertEquals(patientToUpdate, patientUpdated);
+    }
+
+    @Test
+    public void updatePatient_whenIdExistNotExist() {
+        // ARRANGE
+        doReturn(Optional.empty()).when(mockPatientRepository).findById(1L);
+
+        // ACT & ASSERT
+        assertThrows(ResourceNotFoundException.class, () -> {
+            patientServiceImplUnderTest.findPatientById(1L);
+        });
+        verify(mockPatientRepository, never()).save(any(Patient.class));
+    }
 }
