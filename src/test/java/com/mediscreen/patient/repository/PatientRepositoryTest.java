@@ -97,4 +97,17 @@ public class PatientRepositoryTest {
         // ASSERT
         assertEquals(12, listPatients.size());
     }
+
+    @Test
+    public void updatePatient() {
+        // ARRANGE
+        Optional<Patient> patientToUpdate = patientRepositoryUnderTest.findById(1L);
+
+        // ACT
+        patientToUpdate.get().setHomeAddress("HomeAddressUpdated");
+        Patient patientUpdated = patientRepositoryUnderTest.save(patientToUpdate.get());
+
+        // ASSERT
+        assertEquals(patientToUpdate.get().getHomeAddress(), patientUpdated.getHomeAddress());
+    }
 }
