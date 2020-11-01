@@ -175,7 +175,7 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void createPatient_whenPatientNotAlreadyExist() {
+    public void createPatient_whenPatientWithSameNameAndFirstNameNotAlreadyExist() {
         // ARRANGE
         Patient patientToCreate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
         patientToCreate.setId(1L);
@@ -191,7 +191,7 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void createPatient_whenPatientAlreadyExist() {
+    public void createPatient_whenPatientWithSameNameAndFirstNameAlreadyExist() {
         // ARRANGE
         Patient patientToCreate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
         patientToCreate.setId(1L);

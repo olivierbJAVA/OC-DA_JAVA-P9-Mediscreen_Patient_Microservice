@@ -141,4 +141,68 @@ public class PatientControllerTest {
 
         verify(mockPatientService, never()).updatePatient(any(Patient.class));
     }
+
+    @Test
+    public void addPatientForm() {
+        //ARRANGE
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/add"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("patients/add"));
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+    }
+
+    @Test
+    public void validatePatient_whenNoError() {
+        //ARRANGE
+        Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientTest.setId(1L);
+
+        doReturn(patientTest).when(mockPatientService).createPatient(patientTest);
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(post("/patients/validate")
+                    .param("id","1")
+                    .param("lastName", "PatientTestLastName")
+                    .param("firstName", "PatientTestFirstName")
+                    .param("dateOfBirth", LocalDate.of(2000,01,01).toString())
+                    .param("sex", "M")
+                    .param("homeAddress", "PatientTestHomeAddress")
+                    .param("phoneNumber", "111-222-3333"))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(header().string("Location", "/patients/list"));
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+
+        verify(mockPatientService, times(1)).createPatient(any(Patient.class));
+    }
+
+    @Test
+    public void validatePatient_whenError() {
+        //ARRANGE
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(post("/patients/validate")
+                    .param("id","1")
+                    .param("lastName", "PatientTestLastName")
+                    .param("firstName", "PatientTestFirstName")
+                    // error : mandatory date of birth is missing
+                    .param("sex", "M")
+                    .param("homeAddress", "PatientTestHomeAddress")
+                    .param("phoneNumber", "111-222-3333"))
+                    .andExpect(model().attributeHasFieldErrors("patient", "dateOfBirth"))
+                    .andExpect(view().name("patients/add"));
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+
+        verify(mockPatientService, never()).createPatient(any(Patient.class));
+    }
 }
