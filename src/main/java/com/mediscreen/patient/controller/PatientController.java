@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -56,7 +55,7 @@ public class PatientController {
      * @return The name of the View
      */
     @GetMapping("/patients/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+    public String showPatientUpdateForm(@PathVariable("id") Long id, Model model) {
 
         logger.info("Request : GET /patients/update/{}", id);
 
