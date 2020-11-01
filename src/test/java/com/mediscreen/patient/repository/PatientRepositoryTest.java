@@ -110,4 +110,22 @@ public class PatientRepositoryTest {
         // ASSERT
         assertEquals(patientToUpdate.get().getHomeAddress(), patientUpdated.getHomeAddress());
     }
+
+    @Test
+    public void savePatient() {
+        // ARRANGE
+        Patient patientToSave = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+
+        // ACT
+        Patient patientSaved = patientRepositoryUnderTest.save(patientToSave);
+
+        // ASSERT
+        assertNotNull(patientSaved.getId());
+        assertEquals(patientToSave.getLastName(), patientSaved.getLastName());
+        assertEquals(patientToSave.getFirstName(), patientSaved.getFirstName());
+        assertEquals(patientToSave.getDateOfBirth(), patientSaved.getDateOfBirth());
+        assertEquals(patientToSave.getSex(), patientSaved.getSex());
+        assertEquals(patientToSave.getHomeAddress(), patientSaved.getHomeAddress());
+        assertEquals(patientToSave.getPhoneNumber(), patientSaved.getPhoneNumber());
+    }
 }
