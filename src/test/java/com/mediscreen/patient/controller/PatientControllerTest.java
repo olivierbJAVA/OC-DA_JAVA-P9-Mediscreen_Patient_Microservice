@@ -72,7 +72,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void showUpdateForm() {
+    public void showUpdatePatientForm() {
         //ARRANGE
         Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
         patientTest.setId(1L);
