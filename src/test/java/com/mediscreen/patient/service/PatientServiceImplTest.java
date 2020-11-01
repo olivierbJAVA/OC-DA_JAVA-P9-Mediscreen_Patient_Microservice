@@ -2,6 +2,7 @@ package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.constant.Sex;
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
 import com.mediscreen.patient.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
@@ -169,6 +170,36 @@ public class PatientServiceImplTest {
         // ACT & ASSERT
         assertThrows(ResourceNotFoundException.class, () -> {
             patientServiceImplUnderTest.findPatientById(1L);
+        });
+        verify(mockPatientRepository, never()).save(any(Patient.class));
+    }
+
+    @Test
+    public void createPatient_whenPatientNotAlreadyExist() {
+        // ARRANGE
+        Patient patientToCreate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToCreate.setId(1L);
+        doReturn(null).when(mockPatientRepository).findByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
+        doReturn(patientToCreate).when(mockPatientRepository).save(patientToCreate);
+
+        // ACT
+        Patient patientCreated = patientServiceImplUnderTest.createPatient(patientToCreate);
+
+        // ASSERT
+        verify(mockPatientRepository, times(1)).save(patientToCreate);
+        assertEquals(patientToCreate, patientCreated);
+    }
+
+    @Test
+    public void createPatient_whenPatientAlreadyExist() {
+        // ARRANGE
+        Patient patientToCreate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToCreate.setId(1L);
+        doReturn(patientToCreate).when(mockPatientRepository).findByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
+
+        // ACT & ASSERT
+        assertThrows(ResourceAlreadyExistException.class, () -> {
+            patientServiceImplUnderTest.createPatient(patientToCreate);
         });
         verify(mockPatientRepository, never()).save(any(Patient.class));
     }
