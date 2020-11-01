@@ -1,6 +1,7 @@
 package com.mediscreen.patient.domain;
 
 import com.mediscreen.patient.constant.Sex;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -34,7 +35,7 @@ public class Patient implements Serializable {
 
     @NotNull(message = "DateOfBirth is mandatory")
     @Column(nullable = false, columnDefinition = "DATE")
-    //@Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
@@ -49,7 +50,7 @@ public class Patient implements Serializable {
 
     @NotBlank(message = "PhoneNumber is mandatory")
     @Column(nullable = false)
-    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}", message = "Phone Number format : 111-111-1111")
+    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}", message = "Phone Number format : XXX-XXX-XXXX")
     private String phoneNumber;
 
     public Patient() {
