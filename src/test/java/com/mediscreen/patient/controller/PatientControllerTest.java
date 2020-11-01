@@ -22,6 +22,7 @@ import static org.mockito.Mockito.doReturn;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -59,10 +60,10 @@ public class PatientControllerTest {
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(get("/patients"))
+            mockMvc.perform(get("/patients/list"))
                     .andExpect(status().isOk())
                     .andExpect(model().attribute("patients", listPatientsToFind))
-                    .andExpect(view().name("patients"));
+                    .andExpect(view().name("patients/list"));
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
@@ -71,19 +72,19 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getPatientById_whenIdExist() {
+    public void showUpdateForm() {
         //ARRANGE
-        Patient patientToFind = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
-        patientToFind.setId(1L);
+        Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientTest.setId(1L);
 
-        doReturn(patientToFind).when(mockPatientService).findPatientById(1L);
+        doReturn(patientTest).when(mockPatientService).findPatientById(1L);
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(get("/patients/1"))
+            mockMvc.perform(get("/patients/update/1"))
                     .andExpect(status().isOk())
-                    .andExpect(model().attribute("patients", patientToFind))
-                    .andExpect(view().name("patients"));
+                    .andExpect(model().attribute("patient", patientTest))
+                    .andExpect(view().name("patients/update"));
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
@@ -92,106 +93,52 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void getPatientById_whenIdNotExist() {
+    public void updatePatient_whenNoError() {
         //ARRANGE
-        doThrow(ResourceNotFoundException.class).when(mockPatientService).findPatientById(1L);
+        Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientTest.setId(1L);
+
+        doReturn(patientTest).when(mockPatientService).updatePatient(patientTest);
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(get("/patients/1"))
-                    .andExpect(status().isNotFound())
-                    .andExpect(view().name("errorResourceNotFound"));
+            mockMvc.perform(post("/patients/update/1")
+                    .param("id","1")
+                    .param("lastName", "PatientTestLastName")
+                    .param("firstName", "PatientTestFirstName")
+                    .param("dateOfBirth", LocalDate.of(2000,01,01).toString())
+                    .param("sex", "M")
+                    .param("homeAddress", "PatientTestHomeAddress")
+                    .param("phoneNumber", "111-222-3333"))
+                    .andExpect(status().is3xxRedirection())
+                    .andExpect(header().string("Location", "/patients/list"));
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
 
-        verify(mockPatientService, times(1)).findPatientById(1L);
+        verify(mockPatientService, times(1)).updatePatient(any(Patient.class));
     }
 
     @Test
-    public void getPatientsByLastName_whenLastNameExist() {
+    public void updatePatient_whenError() {
         //ARRANGE
-        Patient patientToFind1 = new Patient("PatientTestLastNameToFind", "PatientTestFirstName1", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-111-1111");
-        patientToFind1.setId(1);
-        Patient patientToFind2 = new Patient("PatientTestLastNameToFind", "PatientTestFirstName2", LocalDate.of(2000,02,02), Sex.F, "PatientTestHomeAddress","222-222-2222");
-        patientToFind2.setId(2);
-
-        List<Patient> listPatientsToFind = new ArrayList<>();
-        listPatientsToFind.add(patientToFind1);
-        listPatientsToFind.add(patientToFind2);
-
-        doReturn(listPatientsToFind).when(mockPatientService).findPatientsByLastName("PatientTestLastNameToFind");
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(get("/patientsByLastName")
-                    .param("lastName","PatientTestLastNameToFind"))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attribute("patients", listPatientsToFind))
-                    .andExpect(view().name("patients"));
+            mockMvc.perform(post("/patients/update/1")
+                    .param("id","1")
+                    .param("lastName", "PatientTestLastName")
+                    .param("firstName", "PatientTestFirstName")
+                    // error : mandatory date of birth is missing
+                    .param("sex", "M")
+                    .param("homeAddress", "PatientTestHomeAddress")
+                    .param("phoneNumber", "111-222-3333"))
+                    .andExpect(model().attributeHasFieldErrors("patient", "dateOfBirth"))
+                    .andExpect(view().name("patients/update"));
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
 
-        verify(mockPatientService, times(1)).findPatientsByLastName("PatientTestLastNameToFind");
+        verify(mockPatientService, never()).updatePatient(any(Patient.class));
     }
-
-    @Test
-    public void getPatientsByLastName_whenLastNameNotExist() {
-        //ARRANGE
-        doThrow(ResourceNotFoundException.class).when(mockPatientService).findPatientsByLastName("PatientTestLastNameNotExist");
-
-        //ACT & ASSERT
-        try {
-            mockMvc.perform(get("/patientsByLastName")
-                            .param("lastName","PatientTestLastNameNotExist"))
-                            .andExpect(status().isNotFound())
-                            .andExpect(view().name("errorResourceNotFound"));
-        } catch (Exception e) {
-            logger.error("Error in MockMvc", e);
-        }
-
-        verify(mockPatientService, times(1)).findPatientsByLastName("PatientTestLastNameNotExist");
-    }
-
-    @Test
-    public void getPatientByLastNameAndFirstName_whenLastNameAndFirstNameExist() {
-        //ARRANGE
-        Patient patientToFind = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
-        patientToFind.setId(1L);
-        doReturn(patientToFind).when(mockPatientService).findPatientByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
-
-        //ACT & ASSERT
-        try {
-            mockMvc.perform(get("/patientByLastNameAndFirstName")
-                    .param("lastName","PatientTestLastName")
-                    .param("firstName","PatientTestFirstName"))
-                    .andExpect(status().isOk())
-                    .andExpect(model().attribute("patients", patientToFind))
-                    .andExpect(view().name("patients"));
-        } catch (Exception e) {
-            logger.error("Error in MockMvc", e);
-        }
-        verify(mockPatientService, times(1)).findPatientByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
-    }
-
-    @Test
-    public void getPatientByLastNameAndFirstName_whenLastNameAndFirstNameNotExist() {
-        //ARRANGE
-        doThrow(ResourceNotFoundException.class).when(mockPatientService).findPatientByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
-
-        //ACT & ASSERT
-        try {
-            mockMvc.perform(get("/patientByLastNameAndFirstName")
-                    .param("lastName","PatientTestLastName")
-                    .param("firstName","PatientTestFirstName"))
-                    .andExpect(status().isNotFound())
-                    .andExpect(view().name("errorResourceNotFound"));
-        } catch (Exception e) {
-            logger.error("Error in MockMvc", e);
-        }
-
-        verify(mockPatientService, times(1)).findPatientByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
-    }
-
 }

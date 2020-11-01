@@ -6,10 +6,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -27,83 +30,67 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients" endpoint HTTP request to get the list of all patients.
+     * Method managing the GET "/patients/list" endpoint HTTP request to get the list of all patients.
      *
      * @param model The Model containing the list of all patients
      * @return The name of the View
      */
-    @GetMapping("/patients")
+    @GetMapping("/patients/list")
     public String getPatients(Model model) {
 
-        logger.info("Request : GET /patients");
+        logger.info("Request : GET /patients/list");
 
         List<Patient> patients = patientService.findAllPatients();
         model.addAttribute("patients", patients);
 
-        logger.info("Success : patients found, returning 'patients' view");
+        logger.info("Success : patients found, returning 'patients/list' view");
 
-        return "patients";
+        return "patients/list";
     }
 
     /**
-     * Method managing the GET "/patients/{id}" endpoint HTTP request to get a patient given its id.
+     * Method managing the GET "/patients/update/{id}" endpoint HTTP request to update a patient.
      *
-     * @param id The id of the patient to get
-     * @param model The Model containing the patient to get
+     * @param id The id of the patient to update
+     * @param model The Model containing the patient to update
      * @return The name of the View
      */
-    @GetMapping("/patients/{id}")
-    public String getPatientById(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/patients/update/{id}")
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
 
-        logger.info("Request : GET /patients/{}", id);
+        logger.info("Request : GET /patients/update/{}", id);
 
         Patient patient = patientService.findPatientById(id);
-        model.addAttribute("patients", patient);
+        model.addAttribute("patient", patient);
 
-        logger.info("Success : patient with id {} found, returning '/patients' view", id);
+        logger.info("Success : patient with id {} to update found, returning '/patient/update' view", id);
 
-        return "patients";
+        return "patients/update";
     }
 
     /**
-     * Method managing the GET "/patientsByLastName" endpoint HTTP request to get patients given the last name.
+     * Method managing the POST "/patients/update/{id}" endpoint HTTP request to update a patient.
      *
-     * @param lastName The last name of the patients to get
-     * @param model The Model containing the patients to get
+     * @param patient The patient to update
+     * @param result The BindingResult containing the result of the fields validation
      * @return The name of the View
      */
-    @GetMapping("/patientsByLastName")
-    public String getPatientsByLastName(@RequestParam("lastName") String lastName, Model model) {
+    @PostMapping("/patients/update/{id}")
+    public String updatePatient(@Valid Patient patient, BindingResult result) {
 
-        logger.info("Request : GET /patientsByLastName with last name = {}", lastName);
+        logger.info("Request : POST /patients/update/{}", patient.getId());
 
-        List<Patient> patients = patientService.findPatientsByLastName(lastName);
-        model.addAttribute("patients", patients);
+        if (result.hasErrors()) {
 
-        logger.info("Success : patient(s) with last name = {} found, returning '/patients' view", lastName);
+            logger.error("Error in fields validation : patient with id {} not updated, returning '/patients/update' view", patient.getId());
 
-        return "patients";
+            return "patients/update";
+        }
+
+        patientService.updatePatient(patient);
+
+        logger.info("Success : patient with id {} updated, redirect to '/patients/list", patient.getId());
+
+        return "redirect:/patients/list";
     }
-
-    /**
-     * Method managing the GET "/patientByLastNameAndFirstName" endpoint HTTP request to get a patient given its last name and first name.
-     *
-     * @param lastName The last name of the patient to get
-     * @param firstName The first name of the patient to get
-     * @param model The Model containing the patient to get
-     * @return The name of the View
-     */
-    @GetMapping("/patientByLastNameAndFirstName")
-    public String getPatientByLastNameAndFirstName(@RequestParam("lastName") String lastName, @RequestParam("firstName") String firstName, Model model) {
-
-        logger.info("Request : GET /patientByLastNameAndFirstName with last name = {} & first name = {}", lastName, firstName);
-
-        Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
-        model.addAttribute("patients", patient);
-
-        logger.info("Success : patient with last name {} and first name {} found, returning '/patients' view", lastName, firstName);
-
-        return "patients";
-    }
-
 }

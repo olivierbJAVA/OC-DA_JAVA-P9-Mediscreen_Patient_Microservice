@@ -4,6 +4,7 @@ import com.mediscreen.patient.constant.Sex;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -31,14 +32,13 @@ public class Patient implements Serializable {
     @Column(nullable = false)
     private String firstName;
 
-    @Size(max = 125, message = "Maximum length = 125 characters")
-    @NotBlank(message = "DateOfBirth is mandatory")
+    @NotNull(message = "DateOfBirth is mandatory")
     @Column(nullable = false, columnDefinition = "DATE")
     //@Temporal(TemporalType.DATE)
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "Sex is mandatory")
+    @NotNull(message = "Sex is mandatory")
     @Column(nullable = false, length = 1)
     private Sex sex;
 
@@ -49,7 +49,7 @@ public class Patient implements Serializable {
 
     @NotBlank(message = "PhoneNumber is mandatory")
     @Column(nullable = false)
-    @Pattern(regexp = "^(\\d{3})(\\d{3})(\\d{4}).-", message = "Phone Number : 111-111-1111")
+    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}", message = "Phone Number format : 111-111-1111")
     private String phoneNumber;
 
     public Patient() {
