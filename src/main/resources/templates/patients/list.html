@@ -31,6 +31,9 @@
 				<td th:text="${patient.sex}"></td>
 				<td th:text="${patient.homeAddress}"></td>
 				<td th:text="${patient.phoneNumber}"></td>
+				<td style="width: 15%" class="text-center">
+					<a th:href="@{/patients/update/{id}(id=${patient.id})}">Edit</a>
+				</td>
 			</tr>
 			</tbody>
 		</table>
