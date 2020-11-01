@@ -88,9 +88,15 @@ public class PatientServiceImpl implements IPatientService {
      * @return The patient updated
      * @throws ResourceNotFoundException if the patient to update does not exist
      */
-    public Patient updatePatient(Patient patient) throws ResourceNotFoundException {
+    public Patient updatePatient(Patient patient) throws ResourceNotFoundException, ResourceAlreadyExistException {
 
         patientRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException(patient.getId()));
+
+        // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not update.
+        Patient patientAlreadyExist = patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName());
+        if( patientAlreadyExist != null && patientAlreadyExist.getId()!=patient.getId() ) {
+            throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
+        }
 
         return patientRepository.save(patient);
     }
