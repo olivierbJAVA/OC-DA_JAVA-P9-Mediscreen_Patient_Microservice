@@ -92,4 +92,44 @@ public class PatientController {
 
         return "redirect:/patients/list";
     }
+
+    /**
+     * Method managing the GET "/patients/add" endpoint HTTP request to add a patient.
+     *
+     * @param patient An empty patient
+     * @return The name of the View
+     */
+    @GetMapping("/patients/add")
+    public String addPatientForm(Patient patient) {
+
+        logger.info("Request : GET /patients/add");
+        logger.info("Success : returning 'patients/add' view");
+
+        return "patients/add";
+    }
+
+    /**
+     * Method managing the POST "/patients/validate" endpoint HTTP request to add a patient.
+     *
+     * @param patient The patient to add
+     * @param result The BindingResult containing the result of the fields validation
+     * @return The name of the View
+     */
+    @PostMapping("/patients/validate")
+    public String validate(@Valid Patient patient, BindingResult result) {
+
+        logger.info("Request : POST /patients/validate");
+
+        if (!result.hasErrors()) {
+            patientService.createPatient(patient);
+
+            logger.info("Success : new patient created, redirect to '/patients/list' view");
+
+            return "redirect:/patients/list";
+        }
+
+        logger.error("Error in fields validation : new patient not created, returning '/patients/add' view");
+
+        return "patients/add";
+    }
 }
