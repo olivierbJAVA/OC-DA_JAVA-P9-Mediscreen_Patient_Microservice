@@ -1,6 +1,7 @@
 package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
 import com.mediscreen.patient.repository.PatientRepository;
 import org.springframework.stereotype.Service;
@@ -90,6 +91,24 @@ public class PatientServiceImpl implements IPatientService {
     public Patient updatePatient(Patient patient) throws ResourceNotFoundException {
 
         patientRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException(patient.getId()));
+
+        return patientRepository.save(patient);
+    }
+
+    /**
+     * Create a patient.
+     *
+     * @param patient The patient to create
+     * @return The patient created
+     * @throws ResourceAlreadyExistException if a patient with the same last name and first name already exist
+     */
+    @Override
+    public Patient createPatient(Patient patient) throws ResourceAlreadyExistException {
+
+        // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not create a new one.
+        if( patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName()) != null ) {
+            throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
+        }
 
         return patientRepository.save(patient);
     }

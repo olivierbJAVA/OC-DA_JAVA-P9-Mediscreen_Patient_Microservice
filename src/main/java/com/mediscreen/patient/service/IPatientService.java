@@ -1,6 +1,7 @@
 package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
 
 import java.util.List;
@@ -54,4 +55,12 @@ public interface IPatientService {
      */
     Patient updatePatient(Patient patient) throws ResourceNotFoundException;
 
+    /**
+     * Create a patient.
+     *
+     * @param patient The patient to create
+     * @return The patient created
+     * @throws ResourceAlreadyExistException if a patient with the same last name and first name already exist
+     */
+    Patient createPatient(Patient patient) throws ResourceAlreadyExistException;
 }

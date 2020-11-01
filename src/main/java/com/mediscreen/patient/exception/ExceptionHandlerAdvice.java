@@ -34,4 +34,22 @@ public class ExceptionHandlerAdvice {
         return mav;
     }
 
+    /**
+     * Method managing the ResourceAlreadyExistException.
+     *
+     * @param e The exception
+     * @return A ModelAndView object including information for this exception
+     */
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ModelAndView handleException(ResourceAlreadyExistException e) {
+
+        logger.error("Error : resource already exists");
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("exception", e);
+        mav.setViewName("errorResourceAlreadyExist");
+        return mav;
+    }
+
 }
