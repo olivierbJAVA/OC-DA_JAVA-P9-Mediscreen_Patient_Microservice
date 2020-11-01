@@ -147,11 +147,12 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void updatePatient_whenIdExist() {
+    public void updatePatient_whenIdExistAndPatientWithSameNameAndFirstNameNotAlreadyExist() {
         // ARRANGE
         Patient patientToUpdate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
         patientToUpdate.setId(1L);
         doReturn(Optional.of(patientToUpdate)).when(mockPatientRepository).findById(1L);
+        doReturn(null).when(mockPatientRepository).findByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
         doReturn(patientToUpdate).when(mockPatientRepository).save(patientToUpdate);
 
         // ACT
@@ -160,6 +161,23 @@ public class PatientServiceImplTest {
         // ASSERT
         verify(mockPatientRepository, times(1)).save(patientToUpdate);
         assertEquals(patientToUpdate, patientUpdated);
+    }
+
+    @Test
+    public void updatePatient_whenIdExistAndPatientWithSameNameAndFirstNameAlreadyExist() {
+        // ARRANGE
+        Patient patientAlreadyExisting = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2013,01,01), Sex.M, "PatientExistingHomeAddress","123-123-1234");
+        patientAlreadyExisting.setId(1L);
+        Patient patientToUpdate = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToUpdate.setId(2L);
+        doReturn(Optional.of(patientToUpdate)).when(mockPatientRepository).findById(2L);
+        doReturn(patientAlreadyExisting).when(mockPatientRepository).findByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
+
+        // ACT & ASSERT
+        assertThrows(ResourceAlreadyExistException.class, () -> {
+            patientServiceImplUnderTest.updatePatient(patientToUpdate);
+        });
+        verify(mockPatientRepository, never()).save(any(Patient.class));
     }
 
     @Test
