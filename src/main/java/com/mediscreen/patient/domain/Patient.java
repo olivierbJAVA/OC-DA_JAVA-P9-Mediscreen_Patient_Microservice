@@ -44,19 +44,17 @@ public class Patient implements Serializable {
     private Sex sex;
 
     @Size(max = 255, message = "Maximum length = 255 characters")
-    @NotBlank(message = "HomeAddress is mandatory")
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String homeAddress;
 
-    @NotBlank(message = "PhoneNumber is mandatory")
-    @Column(nullable = false)
-    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}", message = "Phone Number format : XXX-XXX-XXXX")
+    //@Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}", message = "Phone Number format : XXX-XXX-XXXX")
+    @Column(nullable = true)
     private String phoneNumber;
 
     public Patient() {
     }
 
-    public Patient(@Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "LastName is mandatory") String lastName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "FirstName is mandatory") String firstName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "DateOfBirth is mandatory") LocalDate dateOfBirth, @NotBlank(message = "Sex is mandatory") Sex sex, @Size(max = 255, message = "Maximum length = 255 characters") @NotBlank(message = "HomeAddress is mandatory") String homeAddress, @NotBlank(message = "PhoneNumber is mandatory") @Pattern(regexp = "^(\\d{3})(\\d{3})(\\d{4}).-", message = "Phone Number : 111-111-1111") String phoneNumber) {
+    public Patient(@Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "LastName is mandatory") String lastName, @Size(max = 125, message = "Maximum length = 125 characters") @NotBlank(message = "FirstName is mandatory") String firstName, @NotNull(message = "DateOfBirth is mandatory") LocalDate dateOfBirth, @NotNull(message = "Sex is mandatory") Sex sex, @Size(max = 255, message = "Maximum length = 255 characters") String homeAddress, String phoneNumber) {
         this.lastName = lastName;
         this.firstName = firstName;
         this.dateOfBirth = dateOfBirth;
