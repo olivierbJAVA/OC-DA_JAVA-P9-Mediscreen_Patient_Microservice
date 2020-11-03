@@ -60,41 +60,6 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void findPatientsByLastName_whenLastNameExist() {
-        // ARRANGE
-        Patient patientToFind1 = new Patient("PatientTestLastNameToFind", "PatientTestFirstName1", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-111-1111");
-        patientToFind1.setId(1);
-        Patient patientToFind2 = new Patient("PatientTestLastNameToFind", "PatientTestFirstName2", LocalDate.of(2000,02,02), Sex.F, "PatientTestHomeAddress","222-222-2222");
-        patientToFind2.setId(2);
-
-        List<Patient> listPatientsToFind = new ArrayList<>();
-        listPatientsToFind.add(patientToFind1);
-        listPatientsToFind.add(patientToFind2);
-
-        doReturn(listPatientsToFind).when(mockPatientRepository).findByLastName("PatientTestLastNameToFind");
-
-        // ACT
-        List<Patient> listPatientsFound = patientServiceImplUnderTest.findPatientsByLastName("PatientTestLastNameToFind");
-
-        // ASSERT
-        verify(mockPatientRepository, times(1)).findByLastName("PatientTestLastNameToFind");
-        assertEquals(listPatientsToFind, listPatientsFound);
-    }
-
-    @Test
-    public void findPatientsByLastName_whenLastNameNotExist() {
-        // ARRANGE
-        List<Patient> listPatientsEmpty = new ArrayList<>();
-        doReturn(listPatientsEmpty).when(mockPatientRepository).findByLastName("PatientTestLastNameNotExist");
-
-        // ACT & ASSERT
-        assertThrows(ResourceNotFoundException.class, () -> {
-            patientServiceImplUnderTest.findPatientsByLastName("PatientTestLastNameNotExist");
-        });
-        verify(mockPatientRepository, times(1)).findByLastName("PatientTestLastNameNotExist");
-    }
-
-    @Test
     public void findPatientByLastNameAndFirstName_whenLastNameAndFirstNameExist() {
         // ARRANGE
         Patient patientToFind = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
