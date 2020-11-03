@@ -116,7 +116,7 @@ public class PatientController {
      * @return The name of the View
      */
     @PostMapping("/patients/validate")
-    public String validate(@Valid Patient patient, BindingResult result) {
+    public String validatePatient(@Valid Patient patient, BindingResult result) {
 
         logger.info("Request : POST /patients/validate");
 
