@@ -18,16 +18,7 @@ public interface IPatientService {
      * @return The patient corresponding to the id
      * @throws ResourceNotFoundException if no patient is found for the given id
      */
-    Patient findPatientById (Long id) throws ResourceNotFoundException;
-
-    /**
-     * Return the list of patients given the last name.
-     *
-     * @param lastName The last name of patients to return
-     * @return The list of patients corresponding to the last name
-     * @throws ResourceNotFoundException if no patient is found for the given last name
-     */
-    List<Patient> findPatientsByLastName(String lastName) throws ResourceNotFoundException;
+    Patient findPatientById(Long id) throws ResourceNotFoundException;
 
     /**
      * Return a patient given its last name and first name.
@@ -37,7 +28,7 @@ public interface IPatientService {
      * @return The patient corresponding to the last name and first name
      * @throws ResourceNotFoundException if no patient is found for the given last name and first name
      */
-    Patient findPatientByLastNameAndFirstName (String lastName, String firstName) throws ResourceNotFoundException;
+    Patient findPatientByLastNameAndFirstName(String lastName, String firstName) throws ResourceNotFoundException;
 
     /**
      * Return all patients.

@@ -35,24 +35,6 @@ public class PatientServiceImpl implements IPatientService {
     }
 
     /**
-     * Return the list of patients given the last name.
-     *
-     * @param lastName The last name of patients to return
-     * @return The list of patients corresponding to the last name
-     * @throws ResourceNotFoundException if no patient is found for the given last name
-     */
-    @Override
-    public List<Patient> findPatientsByLastName(String lastName) throws ResourceNotFoundException {
-        List<Patient> listPatients = patientRepository.findByLastName(lastName);
-
-        if( listPatients.isEmpty() ) {
-            throw new ResourceNotFoundException(lastName);
-        }
-
-        return listPatients;
-    }
-
-    /**
      * Return a patient given its last name and first name.
      *
      * @param lastName The last name of the patient
