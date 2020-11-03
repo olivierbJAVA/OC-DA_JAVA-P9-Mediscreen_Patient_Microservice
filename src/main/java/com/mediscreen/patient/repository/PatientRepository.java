@@ -12,8 +12,6 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
-    List<Patient> findByLastName (String lastName);
-
     Patient findByLastNameAndFirstName (String lastName, String firstName);
 
 }
