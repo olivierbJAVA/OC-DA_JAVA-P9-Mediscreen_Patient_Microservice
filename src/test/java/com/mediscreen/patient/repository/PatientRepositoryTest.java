@@ -51,30 +51,6 @@ public class PatientRepositoryTest {
     }
 
     @Test
-    public void findPatientByLastNameWhenOnePatientIsPresent() {
-        // ACT
-        List<Patient> listPatients = patientRepositoryUnderTest.findByLastName("Ferguson");
-
-        // ASSERT
-        assertEquals(1, listPatients.size());
-        assertEquals("Ferguson", listPatients.get(0).getLastName());
-        assertEquals("Lucas", listPatients.get(0).getFirstName());
-        assertEquals(LocalDate.of( 1968,6,22), listPatients.get(0).getDateOfBirth());
-        assertEquals(Sex.M, listPatients.get(0).getSex());
-        assertEquals("2 Warren Street", listPatients.get(0).getHomeAddress());
-        assertEquals("387-866-1399", listPatients.get(0).getPhoneNumber());
-    }
-
-    @Test
-    public void findPatientByLastNameWhenThreePatientsArePresent() {
-        // ACT
-        List<Patient> listPatients = patientRepositoryUnderTest.findByLastName("Rees");
-
-        // ASSERT
-        assertEquals(3, listPatients.size());
-    }
-
-    @Test
     public void findPatientByLastNameAndFirstName() {
         // ACT
         Patient patient = patientRepositoryUnderTest.findByLastNameAndFirstName("Ferguson", "Lucas");
@@ -95,7 +71,7 @@ public class PatientRepositoryTest {
         List<Patient> listPatients = patientRepositoryUnderTest.findAll();
 
         // ASSERT
-        assertEquals(12, listPatients.size());
+        assertEquals(10, listPatients.size());
     }
 
     @Test
