@@ -46,7 +46,7 @@ public class PatientServiceImpl implements IPatientService {
     public Patient findPatientByLastNameAndFirstName(String lastName, String firstName) throws ResourceNotFoundException {
         Patient patient = patientRepository.findByLastNameAndFirstName(lastName, firstName);
 
-        if( patient == null ) {
+        if(patient==null) {
             throw new ResourceNotFoundException(lastName, firstName);
         }
 
@@ -76,7 +76,7 @@ public class PatientServiceImpl implements IPatientService {
 
         // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not update.
         Patient patientAlreadyExist = patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName());
-        if( patientAlreadyExist != null && patientAlreadyExist.getId()!=patient.getId() ) {
+        if(patientAlreadyExist!=null && patientAlreadyExist.getId()!=patient.getId()) {
             throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
         }
 
@@ -94,7 +94,7 @@ public class PatientServiceImpl implements IPatientService {
     public Patient createPatient(Patient patient) throws ResourceAlreadyExistException {
 
         // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not create a new one.
-        if( patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName()) != null ) {
+        if(patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName())!=null) {
             throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
         }
 
