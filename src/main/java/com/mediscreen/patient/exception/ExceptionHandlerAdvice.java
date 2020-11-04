@@ -26,7 +26,7 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView handleException(ResourceNotFoundException e) {
 
-        logger.error("Error : resource not found");
+        logger.error("Error : patient not found");
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
@@ -44,7 +44,7 @@ public class ExceptionHandlerAdvice {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ModelAndView handleException(ResourceAlreadyExistException e) {
 
-        logger.error("Error : resource already exists");
+        logger.error("Error : patient already exists");
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("exception", e);
