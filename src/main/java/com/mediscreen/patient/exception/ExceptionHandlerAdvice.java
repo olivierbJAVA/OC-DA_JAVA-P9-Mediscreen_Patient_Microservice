@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Class in charge of managing ResourceNotFoundException.
+ * Class in charge of handling application exceptions.
  */
 @ControllerAdvice(basePackages = {"com.mediscreen.patient"})
 public class ExceptionHandlerAdvice {

@@ -24,15 +24,6 @@ public class ResourceNotFoundException extends RuntimeException {
      * Constructs a new ResourceNotFoundException.
      *
      * @param lastName the last name of the patient that is not found
-     */
-    public ResourceNotFoundException(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * Constructs a new ResourceNotFoundException.
-     *
-     * @param lastName the last name of the patient that is not found
      * @param firstName the first name of the patient that is not found
      */
     public ResourceNotFoundException(String lastName, String firstName) {
