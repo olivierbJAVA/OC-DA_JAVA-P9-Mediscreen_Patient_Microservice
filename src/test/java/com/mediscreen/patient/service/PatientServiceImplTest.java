@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.*;
 /**
  * Class including unit tests for the PatientServiceImpl Class.
  */
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 public class PatientServiceImplTest {
 
@@ -146,7 +148,7 @@ public class PatientServiceImplTest {
     }
 
     @Test
-    public void updatePatient_whenIdExistNotExist() {
+    public void updatePatient_whenIdNotExist() {
         // ARRANGE
         doReturn(Optional.empty()).when(mockPatientRepository).findById(1L);
 
