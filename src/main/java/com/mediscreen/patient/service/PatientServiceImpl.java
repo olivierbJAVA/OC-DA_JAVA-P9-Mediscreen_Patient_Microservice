@@ -69,12 +69,14 @@ public class PatientServiceImpl implements IPatientService {
      * @param patient The patient to update
      * @return The patient updated
      * @throws ResourceNotFoundException if the patient to update does not exist
+     * @throws ResourceAlreadyExistException if a patient with the same last name and first name already exist
      */
+    @Override
     public Patient updatePatient(Patient patient) throws ResourceNotFoundException, ResourceAlreadyExistException {
 
         patientRepository.findById(patient.getId()).orElseThrow(() -> new ResourceNotFoundException(patient.getId()));
 
-        // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not update.
+        // Only one patient with last name and first name must exist. So if a patient with the last name and first name already exist we do not update.
         Patient patientAlreadyExist = patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName());
         if(patientAlreadyExist!=null && patientAlreadyExist.getId()!=patient.getId()) {
             throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
@@ -94,7 +96,8 @@ public class PatientServiceImpl implements IPatientService {
     public Patient createPatient(Patient patient) throws ResourceAlreadyExistException {
 
         // Only one patient with last name and first name must exit. So if a patient with the last name and first name already exist we do not create a new one.
-        if(patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName())!=null) {
+        Patient patientAlreadyExist = patientRepository.findByLastNameAndFirstName(patient.getLastName(), patient.getFirstName());
+        if(patientAlreadyExist!=null) {
             throw new ResourceAlreadyExistException(patient.getLastName(), patient.getFirstName());
         }
 

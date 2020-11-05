@@ -43,8 +43,9 @@ public interface IPatientService {
      * @param patient The patient to update
      * @return The patient updated
      * @throws ResourceNotFoundException if the patient to update does not exist
+     * @throws ResourceAlreadyExistException if a patient with the same last name and first name already exist
      */
-    Patient updatePatient(Patient patient) throws ResourceNotFoundException;
+    Patient updatePatient(Patient patient) throws ResourceNotFoundException, ResourceAlreadyExistException;
 
     /**
      * Create a patient.
