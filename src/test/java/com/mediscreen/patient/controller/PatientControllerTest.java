@@ -73,6 +73,43 @@ public class PatientControllerTest {
     }
 
     @Test
+    public void getPatientByLastNameAndFirstName_whenLastNameAndFirstNameExist() {
+        //ARRANGE
+        Patient patientToFind = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToFind.setId(1L);
+        doReturn(patientToFind).when(mockPatientService).findPatientByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/patientByFamilyAndGiven")
+                    .param("family","PatientTestLastName")
+                    .param("given","PatientTestFirstName"))
+                    .andExpect(status().isFound());
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+        verify(mockPatientService, times(1)).findPatientByLastNameAndFirstName("PatientTestLastName", "PatientTestFirstName");
+    }
+
+    @Test
+    public void getPatientByLastNameAndFirstName_whenLastNameAndFirstNameNotExist() {
+        //ARRANGE
+        doThrow(ResourceNotFoundException.class).when(mockPatientService).findPatientByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/patientByFamilyAndGiven")
+                    .param("family","PatientTestLastName")
+                    .param("given","PatientTestFirstName"))
+                    .andExpect(status().isNotFound());
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+
+        verify(mockPatientService, times(1)).findPatientByLastNameAndFirstName("PatientTestLastName","PatientTestFirstName");
+    }
+
+    @Test
     public void showUpdatePatientForm() {
         //ARRANGE
         Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
@@ -168,7 +205,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/validateform")
-                    //.param("id","1")
                     .param("lastName", "PatientTestLastName")
                     .param("firstName", "PatientTestFirstName")
                     .param("dateOfBirth", LocalDate.of(2000,01,01).toString())
@@ -191,7 +227,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/validateform")
-                    //.param("id","1")
                     .param("lastName", "PatientTestLastName")
                     .param("firstName", "PatientTestFirstName")
                     // error : mandatory date of birth is missing
@@ -220,7 +255,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/update")
-                    //.param("id","1")
                     .param("family", "PatientTestLastName")
                     .param("given", "PatientTestFirstName")
                     .param("dob", LocalDate.of(2000,01,01).toString())
@@ -242,7 +276,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/update")
-                    //.param("id","1")
                     .param("family", "PatientTestLastName")
                     .param("given", "PatientTestFirstName")
                     // error : mandatory date of birth is missing
@@ -265,7 +298,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/update")
-                    //.param("id","1")
                     .param("family", "PatientTestLastName")
                     .param("given", "PatientTestFirstName")
                     .param("dob", LocalDate.of(2000,01,01).toString())
@@ -311,7 +343,6 @@ public class PatientControllerTest {
         //ACT & ASSERT
         try {
             mockMvc.perform(post("/patients/update")
-                    //.param("id","1")
                     .param("family", "PatientTestLastName")
                     .param("given", "PatientTestFirstName")
                     // error : mandatory date of birth is missing
