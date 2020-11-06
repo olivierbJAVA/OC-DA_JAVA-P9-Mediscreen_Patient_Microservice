@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.mediscreen'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0'
 sourceCompatibility = '1.8'
 
 repositories {
@@ -23,6 +23,10 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+}
+
+bootJar {
+	archiveFileName = "Mediscreen_Patient-1.0.0.jar"
 }
 
 test {
