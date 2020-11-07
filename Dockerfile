@@ -5,5 +5,5 @@ RUN gradle clean bootJar
 
 FROM openjdk:8-jre-slim
 COPY --from=builder /home/gradle/src/build/libs/Mediscreen_Patient-1.0.0.jar /app/Mediscreen_Patient-1.0.0.jar
-EXPOSE 8080
+EXPOSE 8081
 ENTRYPOINT ["java","-jar","/app/Mediscreen_Patient-1.0.0.jar"]
