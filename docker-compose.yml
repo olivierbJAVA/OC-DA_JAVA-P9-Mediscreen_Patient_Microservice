@@ -13,7 +13,7 @@ services:
             MYSQL_USER: root
             MYSQL_PASSWORD: rootroot
         volumes:
-            - /mysql_data:/var/lib/mysql
+            - ./mysql_data:/var/lib/mysql
         networks:
             - ms-net
 
@@ -22,7 +22,7 @@ services:
         container_name: patient
         restart: always
         ports:
-            - 8080:8080
+            - 8081:8081
         networks:
             - ms-net
         depends_on:
