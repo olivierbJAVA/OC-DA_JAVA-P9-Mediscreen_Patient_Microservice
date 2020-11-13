@@ -12,6 +12,13 @@ import java.util.List;
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long> {
 
+    /**
+     * Return a patient given its last name and first name.
+     *
+     * @param lastName The last name of the patient
+     * @param firstName The first name of the patient
+     * @return The patient corresponding to the last name and first name
+     */
     Patient findByLastNameAndFirstName (String lastName, String firstName);
 
 }
