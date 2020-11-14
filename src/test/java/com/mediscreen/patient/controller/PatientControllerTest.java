@@ -358,7 +358,7 @@ public class PatientControllerTest {
     }
 
     @Test
-    public void createPatient_whenPatientAlreadyExist() {
+    public void addPatient_whenPatientAlreadyExist() {
         //ARRANGE
         Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
 
