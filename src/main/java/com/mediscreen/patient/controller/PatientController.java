@@ -56,6 +56,25 @@ public class PatientController {
     }
 
     /**
+     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name in JSON data.
+     *
+     * @param lastName The last name of the patient to get
+     * @param firstName The first name of the patient to get
+     * @return A ResponseEntity containing the updated patient and the HTTP status code
+     */
+    @GetMapping("/patients/patientByFamilyAndGiven")
+    public ResponseEntity<Patient> getPatientByLastNameAndFirstName(@RequestParam("family") String lastName, @RequestParam("given") String firstName) {
+
+        logger.info("Request : GET /patients/patientByFamilyAndGiven with last name = {} & first name = {}", lastName, firstName);
+
+        Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
+
+        logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
+
+        return new ResponseEntity<>(patient, HttpStatus.FOUND);
+    }
+
+    /**
      * Method managing the GET "/patients/updateform/{id}" endpoint HTTP request to update a patient using a HTML form.
      *
      * @param id The id of the patient to update
@@ -102,6 +121,36 @@ public class PatientController {
     }
 
     /**
+     * Method managing the POST "/patients/update" endpoint HTTP request to update a patient using a command line HTTP client and parameters in the URL request.
+     *
+     * @param family The last name of the patient
+     * @param given The first name of the patient
+     * @param dob The date of birth of the patient
+     * @param sex The sex of the patient
+     * @param address The home address of the patient
+     * @param phone The phone number of the patient
+     * @return A ResponseEntity containing the updated patient and the HTTP status code
+     */
+    @PostMapping("/patients/update")
+    public ResponseEntity<Patient> updatePatient(@RequestParam(required = true) String family, @RequestParam(required = true) String given, @RequestParam(required = true) String dob, @RequestParam(required = true) Sex sex, @RequestParam(required = false) String address, @RequestParam(required = false) String phone) {
+
+        logger.info("Request : POST /patients/update");
+
+        Patient patientToUpdate = patientService.findPatientByLastNameAndFirstName(family, given);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
+        Patient patientUpdated = new Patient(family, given, dateOfBirth, sex, address, phone);
+        patientUpdated.setId(patientToUpdate.getId());
+
+        patientService.updatePatient(patientUpdated);
+
+        logger.info("Success : patient updated");
+
+        return new ResponseEntity<>(patientUpdated, HttpStatus.OK);
+    }
+
+    /**
      * Method managing the GET "/patients/addform" endpoint HTTP request to add a patient using a HTML form.
      *
      * @param patient An empty patient
@@ -139,55 +188,6 @@ public class PatientController {
         logger.error("Error in fields validation : new patient not created, returning '/patients/addform' view");
 
         return "patients/addform";
-    }
-
-    /**
-     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name in JSON data.
-     *
-     * @param lastName The last name of the patient to get
-     * @param firstName The first name of the patient to get
-     * @return A ResponseEntity containing the updated patient and the HTTP status code
-     */
-    @GetMapping("/patients/patientByFamilyAndGiven")
-    public ResponseEntity<Patient> getPatientByLastNameAndFirstName(@RequestParam("family") String lastName, @RequestParam("given") String firstName) {
-
-        logger.info("Request : GET /patients/patientByFamilyAndGiven with last name = {} & first name = {}", lastName, firstName);
-
-        Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
-
-        logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
-
-        return new ResponseEntity<>(patient, HttpStatus.FOUND);
-    }
-
-    /**
-     * Method managing the POST "/patients/update" endpoint HTTP request to update a patient using a command line HTTP client and parameters in the URL request.
-     *
-     * @param family The last name of the patient
-     * @param given The first name of the patient
-     * @param dob The date of birth of the patient
-     * @param sex The sex of the patient
-     * @param address The home address of the patient
-     * @param phone The phone number of the patient
-     * @return A ResponseEntity containing the updated patient and the HTTP status code
-     */
-    @PostMapping("/patients/update")
-    public ResponseEntity<Patient> updatePatient(@RequestParam(required = true) String family, @RequestParam(required = true) String given, @RequestParam(required = true) String dob, @RequestParam(required = true) Sex sex, @RequestParam(required = false) String address, @RequestParam(required = false) String phone) {
-
-        logger.info("Request : POST /patients/update");
-
-        Patient patientToUpdate = patientService.findPatientByLastNameAndFirstName(family, given);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
-        Patient patientUpdated = new Patient(family, given, dateOfBirth, sex, address, phone);
-        patientUpdated.setId(patientToUpdate.getId());
-
-        patientService.updatePatient(patientUpdated);
-
-        logger.info("Success : patient updated");
-
-        return new ResponseEntity<>(patientUpdated, HttpStatus.OK);
     }
 
     /**
