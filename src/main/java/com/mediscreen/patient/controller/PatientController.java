@@ -56,25 +56,6 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name in JSON data.
-     *
-     * @param lastName The last name of the patient to get
-     * @param firstName The first name of the patient to get
-     * @return A ResponseEntity containing the updated patient and the HTTP status code
-     */
-    @GetMapping("/patients/patientByFamilyAndGiven")
-    public ResponseEntity<Patient> getPatientByLastNameAndFirstName(@RequestParam("family") String lastName, @RequestParam("given") String firstName) {
-
-        logger.info("Request : GET /patients/patientByFamilyAndGiven with last name = {} & first name = {}", lastName, firstName);
-
-        Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
-
-        logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
-
-        return new ResponseEntity<>(patient, HttpStatus.FOUND);
-    }
-
-    /**
      * Method managing the GET "/patients/updateform/{id}" endpoint HTTP request to update a patient using a HTML form.
      *
      * @param id The id of the patient to update
@@ -158,6 +139,25 @@ public class PatientController {
         logger.error("Error in fields validation : new patient not created, returning '/patients/addform' view");
 
         return "patients/addform";
+    }
+
+    /**
+     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name in JSON data.
+     *
+     * @param lastName The last name of the patient to get
+     * @param firstName The first name of the patient to get
+     * @return A ResponseEntity containing the updated patient and the HTTP status code
+     */
+    @GetMapping("/patients/patientByFamilyAndGiven")
+    public ResponseEntity<Patient> getPatientByLastNameAndFirstName(@RequestParam("family") String lastName, @RequestParam("given") String firstName) {
+
+        logger.info("Request : GET /patients/patientByFamilyAndGiven with last name = {} & first name = {}", lastName, firstName);
+
+        Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
+
+        logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
+
+        return new ResponseEntity<>(patient, HttpStatus.FOUND);
     }
 
     /**
