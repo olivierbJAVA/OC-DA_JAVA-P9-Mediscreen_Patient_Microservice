@@ -37,7 +37,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients/list" endpoint HTTP request to get the list of all patients.
+     * Method managing the GET "/patients/list" endpoint HTTP request to get the list of all patients in a HTML page.
      *
      * @param model The Model containing the list of all patients
      * @return The name of the View
@@ -56,7 +56,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name.
+     * Method managing the GET "/patients/patientByFamilyAndGiven" endpoint HTTP request to get a patient given its last name and first name in JSON data.
      *
      * @param lastName The last name of the patient to get
      * @param firstName The first name of the patient to get
@@ -75,7 +75,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients/updateform/{id}" endpoint HTTP request to update a patient using a form.
+     * Method managing the GET "/patients/updateform/{id}" endpoint HTTP request to update a patient using a HTML form.
      *
      * @param id The id of the patient to update
      * @param model The Model containing the patient to update
@@ -95,7 +95,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the POST "/patients/updateform/{id}" endpoint HTTP request to update a patient using a form.
+     * Method managing the POST "/patients/updateform/{id}" endpoint HTTP request to update a patient using a HTML form.
      *
      * @param patient The patient to update
      * @param result The BindingResult containing the result of the fields validation
@@ -121,7 +121,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the GET "/patients/addform" endpoint HTTP request to add a patient using a form.
+     * Method managing the GET "/patients/addform" endpoint HTTP request to add a patient using a HTML form.
      *
      * @param patient An empty patient
      * @return The name of the View
@@ -136,7 +136,7 @@ public class PatientController {
     }
 
     /**
-     * Method managing the POST "/patients/validateform" endpoint HTTP request to add a patient using a form.
+     * Method managing the POST "/patients/validateform" endpoint HTTP request to add a patient using a HTML form.
      *
      * @param patient The patient to add
      * @param result The BindingResult containing the result of the fields validation
