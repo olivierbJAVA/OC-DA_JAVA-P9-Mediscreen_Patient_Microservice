@@ -31,7 +31,11 @@
 				<td th:text="${patient.homeAddress}"></td>
 				<td th:text="${patient.phoneNumber}"></td>
 				<td style="width: 15%" class="text-center">
-					<a th:href="@{/patients/updateform/{id}(id=${patient.id})}">Edit</a>
+					<a th:href="@{/patients/updateform/{id}(id=${patient.id})}">Edit</a>&nbsp;|&nbsp;
+					<!--
+					<a th:href="@{/patients/notes/{id}(id=${patient.id})}">Notes</a>
+					-->
+					<a th:href="@{/patients/notes/{lastName}/{firstName}(lastName=${patient.lastName},firstName=${patient.firstName})}">Notes</a>
 				</td>
 			</tr>
 			</tbody>
