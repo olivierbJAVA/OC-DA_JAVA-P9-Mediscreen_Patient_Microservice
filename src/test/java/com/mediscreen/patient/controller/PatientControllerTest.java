@@ -342,7 +342,7 @@ public class PatientControllerTest {
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(post("/patients/update")
+            mockMvc.perform(post("/patients/add")
                     .param("family", "PatientTestLastName")
                     .param("given", "PatientTestFirstName")
                     // error : mandatory date of birth is missing
@@ -379,5 +379,18 @@ public class PatientControllerTest {
         }
 
         verify(mockPatientService, never()).updatePatient(any(Patient.class));
+    }
+
+    @Test
+    public void getPatientNotes() {
+        //ARRANGE
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/notes/PatientTestLastName/PatientTestFirstName"))
+                    .andExpect(status().is3xxRedirection());
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
     }
 }
