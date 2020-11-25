@@ -5,15 +5,18 @@ import com.mediscreen.patient.domain.Patient;
 import com.mediscreen.patient.service.IPatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.*;
@@ -29,6 +32,12 @@ import java.util.List;
 public class PatientController {
 
     private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
+
+    @Value("${noteMicroservice.port}")
+    private String noteMicroservicePort;
+
+    @Value("${noteMicroservice.address}")
+    private String noteMicroserviceAddress;
 
     private IPatientService patientService;
 
@@ -230,4 +239,48 @@ public class PatientController {
 
         return ResponseEntity.created(location).build();
     }
+
+/*
+    @GetMapping("/patients/notes/{id}")
+    public ModelAndView getPatientNotes(@PathVariable("id") Long id) {
+
+        Patient patient = patientService.findPatientById(id);
+
+        logger.info("Request : GET /patients/notes with lastName={} and firstName={}", patient.getLastName(), patient.getFirstName());
+
+        String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName?lastName=" + patient.getLastName() + "&firstName=" + patient.getFirstName();
+
+        return new ModelAndView("redirect:" + redirectedURL);
+
+    }
+*/
+
+    /**
+     * Method managing the GET "/patients/notes" endpoint HTTP request to redirect to the patient notes view in the Mediscreen Note Microservice
+     *
+     * @param lastName The last name of the patient
+     * @param firstName The first name of the patient
+     * @return A ModelAndView containing the redirection information
+     */
+    @GetMapping("/patients/notes/{lastName}/{firstName}")
+    public ModelAndView getPatientNotes(@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName, ModelMap model) {
+
+        logger.info("Request : GET /patients/notes with lastName={} and firstName={}", lastName, firstName);
+
+        logger.info("Success : redirect to '/patients/notes' view in Mediscreen Note Microservice");
+
+        model.addAttribute("lastName", lastName);
+        model.addAttribute("firstName", firstName);
+
+        String redirectedURL = "http://" + noteMicroserviceAddress + ":" + noteMicroservicePort + "/patHistoryByPatientLastNameAndFirstName";
+
+        //String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName";
+
+        //String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName?lastName=" + lastName + "&firstName=" + firstName;
+
+        //return new ModelAndView("redirect:" + redirectedURL);
+
+        return new ModelAndView("redirect:" + redirectedURL, model);
+    }
+
 }
