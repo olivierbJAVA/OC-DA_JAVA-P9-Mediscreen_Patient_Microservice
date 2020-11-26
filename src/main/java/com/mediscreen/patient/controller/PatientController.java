@@ -257,18 +257,18 @@ public class PatientController {
 */
 
     /**
-     * Method managing the GET "/patients/notes" endpoint HTTP request to redirect to the patient notes view in the Mediscreen Note Microservice
+     * Method managing the GET "/notes/{lastName}/{firstName}" endpoint HTTP request to redirect to the patient notes view in the Mediscreen Note Microservice
      *
      * @param lastName The last name of the patient
      * @param firstName The first name of the patient
      * @return A ModelAndView containing the redirection information
      */
-    @GetMapping("/patients/notes/{lastName}/{firstName}")
+    @GetMapping("/notes/{lastName}/{firstName}")
     public ModelAndView getPatientNotes(@PathVariable("lastName") String lastName, @PathVariable("firstName") String firstName, ModelMap model) {
 
-        logger.info("Request : GET /patients/notes with lastName={} and firstName={}", lastName, firstName);
+        logger.info("Request : GET /notes with lastName={} and firstName={}", lastName, firstName);
 
-        logger.info("Success : redirect to '/patients/notes' view in Mediscreen Note Microservice");
+        logger.info("Success : redirect to '/notes' view in Mediscreen Note Microservice");
 
         model.addAttribute("lastName", lastName);
         model.addAttribute("firstName", firstName);
