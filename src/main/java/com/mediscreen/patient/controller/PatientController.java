@@ -80,7 +80,8 @@ public class PatientController {
 
         logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
 
-        return new ResponseEntity<>(patient, HttpStatus.FOUND);
+        //return new ResponseEntity<>(patient, HttpStatus.FOUND);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
     /**
