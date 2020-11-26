@@ -84,7 +84,7 @@ public class PatientControllerTest {
             mockMvc.perform(get("/patients/patientByFamilyAndGiven")
                     .param("family","PatientTestLastName")
                     .param("given","PatientTestFirstName"))
-                    .andExpect(status().isFound());
+                    .andExpect(status().isOk());
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
@@ -387,7 +387,7 @@ public class PatientControllerTest {
 
         //ACT & ASSERT
         try {
-            mockMvc.perform(get("/patients/notes/PatientTestLastName/PatientTestFirstName"))
+            mockMvc.perform(get("/notes/PatientTestLastName/PatientTestFirstName"))
                     .andExpect(status().is3xxRedirection());
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
