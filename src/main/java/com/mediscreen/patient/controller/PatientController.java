@@ -69,7 +69,7 @@ public class PatientController {
      *
      * @param lastName The last name of the patient to get
      * @param firstName The first name of the patient to get
-     * @return A ResponseEntity containing the updated patient and the HTTP status code
+     * @return A ResponseEntity containing the patient and the HTTP status code
      */
     @GetMapping("/patients/patientByFamilyAndGiven")
     public ResponseEntity<Patient> getPatientByLastNameAndFirstName(@RequestParam("family") String lastName, @RequestParam("given") String firstName) {
@@ -79,6 +79,25 @@ public class PatientController {
         Patient patient = patientService.findPatientByLastNameAndFirstName(lastName, firstName);
 
         logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
+
+        //return new ResponseEntity<>(patient, HttpStatus.FOUND);
+        return new ResponseEntity<>(patient, HttpStatus.OK);
+    }
+
+    /**
+     * Method managing the GET "/patients/patientById" endpoint HTTP request to get a patient given its identifier in JSON data.
+     *
+     * @param id The identifier of the patient to get
+     * @return A ResponseEntity containing the patient and the HTTP status code
+     */
+    @GetMapping("/patients/patientById")
+    public ResponseEntity<Patient> getPatientById(@RequestParam("id") long id) {
+
+        logger.info("Request : GET /patients/patientById with id = {}", id);
+
+        Patient patient = patientService.findPatientById(id);
+
+        logger.info("Success : patient with id {} found", id);
 
         //return new ResponseEntity<>(patient, HttpStatus.FOUND);
         return new ResponseEntity<>(patient, HttpStatus.OK);
