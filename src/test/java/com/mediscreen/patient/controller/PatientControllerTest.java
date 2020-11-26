@@ -110,6 +110,41 @@ public class PatientControllerTest {
     }
 
     @Test
+    public void getPatientById_whenIdExist() {
+        //ARRANGE
+        Patient patientToFind = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
+        patientToFind.setId(1L);
+        doReturn(patientToFind).when(mockPatientService).findPatientById(1L);
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/patientById")
+                    .param("id","1"))
+                    .andExpect(status().isOk());
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+        verify(mockPatientService, times(1)).findPatientById(1L);
+    }
+
+    @Test
+    public void getPatientById_whenIdNotExist() {
+        //ARRANGE
+        doThrow(ResourceNotFoundException.class).when(mockPatientService).findPatientById(1L);
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/patientById")
+                    .param("id","1"))
+                    .andExpect(status().isNotFound());
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+
+        verify(mockPatientService, times(1)).findPatientById(1L);
+    }
+
+    @Test
     public void showUpdatePatientForm() {
         //ARRANGE
         Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-222-3333");
