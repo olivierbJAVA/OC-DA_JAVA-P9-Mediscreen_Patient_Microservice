@@ -63,10 +63,6 @@ public class Patient implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public long getId() {
         return id;
     }
