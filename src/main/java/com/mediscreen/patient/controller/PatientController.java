@@ -2,6 +2,7 @@ package com.mediscreen.patient.controller;
 
 import com.mediscreen.patient.constant.Sex;
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.domain.Rapport;
 import com.mediscreen.patient.service.IPatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -303,4 +304,23 @@ public class PatientController {
         return new ModelAndView("redirect:" + redirectedURL, model);
     }
 
+    /**
+     * Method managing the GET "/patients/rapport/{id}" endpoint HTTP request to get a patient diabetes risk assessment report given its identifier and in HTML form.
+     *
+     * @param id The id of the patient
+     * @param model The Model containing the rapport generated
+     * @return The name of the View
+     */
+    @GetMapping("/patients/rapport/{id}")
+    public String getPatientRapport(@PathVariable("id") Long id, Model model) {
+
+        logger.info("Request : GET /patients/rapport/{}", id);
+
+        Rapport rapport = patientService.getPatientRapport(id);
+        model.addAttribute("rapport", rapport);
+
+        logger.info("Success : report for patient with id {} generated, returning '/patients/rapport' view", id);
+
+        return "patients/rapport";
+    }
 }
