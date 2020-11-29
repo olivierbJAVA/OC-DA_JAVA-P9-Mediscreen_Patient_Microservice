@@ -1,6 +1,7 @@
 package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.domain.Rapport;
 import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
 
@@ -55,4 +56,12 @@ public interface IPatientService {
      * @throws ResourceAlreadyExistException if a patient with the same last name and first name already exist
      */
     Patient createPatient(Patient patient) throws ResourceAlreadyExistException;
+
+    /**
+     * Get the patient diabetes risk assessment report.
+     *
+     * @param id The patient identifier
+     * @return The rapport generated
+     */
+    Rapport getPatientRapport(long id);
 }

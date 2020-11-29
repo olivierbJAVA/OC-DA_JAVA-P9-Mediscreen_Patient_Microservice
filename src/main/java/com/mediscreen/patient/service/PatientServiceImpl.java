@@ -1,8 +1,10 @@
 package com.mediscreen.patient.service;
 
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.domain.Rapport;
 import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
+import com.mediscreen.patient.proxy.RapportMicroserviceProxy;
 import com.mediscreen.patient.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,11 @@ public class PatientServiceImpl implements IPatientService {
 
     private PatientRepository patientRepository;
 
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    private RapportMicroserviceProxy rapportProxy;
+
+    public PatientServiceImpl(PatientRepository patientRepository, RapportMicroserviceProxy rapportProxy) {
         this.patientRepository = patientRepository;
+        this.rapportProxy = rapportProxy;
     }
 
     /**
@@ -102,5 +107,18 @@ public class PatientServiceImpl implements IPatientService {
         }
 
         return patientRepository.save(patient);
+    }
+
+    /**
+     * Return the patient diabetes risk assessment report.
+     *
+     * @param id The id of the patient
+     * @return The rapport
+     */
+    @Override
+    public Rapport getPatientRapport(long id){
+
+        return rapportProxy.getPatientRapportById(id);
+
     }
 }
