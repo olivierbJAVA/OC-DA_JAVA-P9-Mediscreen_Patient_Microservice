@@ -30,4 +30,13 @@ public class ResourceNotFoundException extends RuntimeException {
         this.lastName = lastName;
         this.firstName = firstName;
     }
+
+    /**
+     * Constructs a new ResourceNotFoundException.
+     *
+     * @param message the error message
+     */
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
 }
