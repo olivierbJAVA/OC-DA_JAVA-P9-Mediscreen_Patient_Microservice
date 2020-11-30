@@ -13,8 +13,8 @@ public class CustomErrorDecoder implements ErrorDecoder {
     /**
      * Manage Feign custom exceptions.
      *
-     * @param invoker the invoker for the exception
-     * @param response the error response
+     * @param invoker The invoker for the exception
+     * @param response The error response
      * @return The default error decoder
      */
     @Override
