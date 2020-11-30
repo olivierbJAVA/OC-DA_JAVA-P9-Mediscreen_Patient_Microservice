@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Proxy for the Rapport Microservice using Feign to communicate with the Rapport Microservice.
  */
-@FeignClient(name = "RAPPORT-MICROSERVICE", url = "localhost:8080")
+@FeignClient(name = "RAPPORT-MICROSERVICE", url = "${rapportMicroserviceUrl}")
 public interface RapportMicroserviceProxy {
 
     /**
