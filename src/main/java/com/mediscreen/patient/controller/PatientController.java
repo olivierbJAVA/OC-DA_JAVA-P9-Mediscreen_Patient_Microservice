@@ -34,11 +34,8 @@ public class PatientController {
 
     private static final Logger logger = LoggerFactory.getLogger(PatientController.class);
 
-    @Value("${noteMicroservice.port}")
-    private String noteMicroservicePort;
-
-    @Value("${noteMicroservice.address}")
-    private String noteMicroserviceAddress;
+    @Value("${noteMicroserviceUrl}")
+    private String noteMicroserviceUrl;
 
     private IPatientService patientService;
 
@@ -293,13 +290,7 @@ public class PatientController {
         model.addAttribute("lastName", lastName);
         model.addAttribute("firstName", firstName);
 
-        String redirectedURL = "http://" + noteMicroserviceAddress + ":" + noteMicroservicePort + "/patHistoryByPatientLastNameAndFirstName";
-
-        //String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName";
-
-        //String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName?lastName=" + lastName + "&firstName=" + firstName;
-
-        //return new ModelAndView("redirect:" + redirectedURL);
+        String redirectedURL = "http://" + noteMicroserviceUrl + "/patHistoryByPatientLastNameAndFirstName";
 
         return new ModelAndView("redirect:" + redirectedURL, model);
     }
