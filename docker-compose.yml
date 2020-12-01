@@ -13,7 +13,7 @@ services:
             MYSQL_USER: root
             MYSQL_PASSWORD: rootroot
         volumes:
-            - ./mysql_data:/var/lib/mysql
+            - mysqldata:/var/lib/mysql
         networks:
             - ms-net
 
@@ -31,3 +31,6 @@ services:
 networks:
   ms-net:
       driver: bridge
+
+volumes:
+    mysqldata:
