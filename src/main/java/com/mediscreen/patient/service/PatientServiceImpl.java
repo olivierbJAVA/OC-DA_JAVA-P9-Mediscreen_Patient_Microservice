@@ -18,9 +18,9 @@ import java.util.List;
 @Transactional
 public class PatientServiceImpl implements IPatientService {
 
-    private PatientRepository patientRepository;
+    private final PatientRepository patientRepository;
 
-    private RapportMicroserviceProxy rapportProxy;
+    private final RapportMicroserviceProxy rapportProxy;
 
     public PatientServiceImpl(PatientRepository patientRepository, RapportMicroserviceProxy rapportProxy) {
         this.patientRepository = patientRepository;
