@@ -37,7 +37,7 @@ public class PatientController {
     @Value("${noteMicroserviceUrl}")
     private String noteMicroserviceUrl;
 
-    private IPatientService patientService;
+    private final IPatientService patientService;
 
     public PatientController(IPatientService patientService) {
         this.patientService = patientService;
