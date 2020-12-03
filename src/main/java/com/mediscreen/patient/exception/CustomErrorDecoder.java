@@ -10,6 +10,8 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     private final ErrorDecoder defaultErrorDecoder = new Default();
 
+    private final String ResourceNotFoundExceptionMessage = "Error : Resource Not Found";
+
     /**
      * Manage Feign custom exceptions.
      *
@@ -21,7 +23,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
     public Exception decode(String invoker, Response response) {
 
         if(response.status()==404) {
-            return new ResourceNotFoundException("Error : Resource Not Found");
+            return new ResourceNotFoundException(ResourceNotFoundExceptionMessage);
         }
 
         return defaultErrorDecoder.decode(invoker, response);
