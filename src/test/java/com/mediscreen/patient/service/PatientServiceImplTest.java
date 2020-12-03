@@ -1,9 +1,12 @@
 package com.mediscreen.patient.service;
 
+import com.mediscreen.patient.constant.Assessment;
 import com.mediscreen.patient.constant.Sex;
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.domain.Rapport;
 import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
+import com.mediscreen.patient.proxy.RapportMicroserviceProxy;
 import com.mediscreen.patient.repository.PatientRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +37,9 @@ public class PatientServiceImplTest {
 
     @Mock
     private PatientRepository mockPatientRepository;
+
+    @Mock
+    private RapportMicroserviceProxy mockRapportProxy;
 
     @Test
     public void findPatientById_whenIdExist() {
@@ -187,5 +194,19 @@ public class PatientServiceImplTest {
             patientServiceImplUnderTest.createPatient(patientToCreate);
         });
         verify(mockPatientRepository, never()).save(any(Patient.class));
+    }
+
+    @Test
+    public void getPatientRapport() {
+        // ARRANGE
+        Rapport rapportToGet = new Rapport( "PatientTestLastName", "PatientTestFirstName", Sex.M, ChronoUnit.YEARS.between(LocalDate.of(2000,01,01), LocalDate.now()), Assessment.None);
+        doReturn(rapportToGet).when(mockRapportProxy).getPatientRapportById(1L);
+
+        // ACT
+        Rapport rapportGet = patientServiceImplUnderTest.getPatientRapport(1L);
+
+        // ASSERT
+        verify(mockRapportProxy, times(1)).getPatientRapportById(1L);
+        assertEquals(rapportToGet, rapportGet);
     }
 }
