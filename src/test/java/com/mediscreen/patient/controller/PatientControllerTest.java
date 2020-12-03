@@ -1,7 +1,9 @@
 package com.mediscreen.patient.controller;
 
+import com.mediscreen.patient.constant.Assessment;
 import com.mediscreen.patient.constant.Sex;
 import com.mediscreen.patient.domain.Patient;
+import com.mediscreen.patient.domain.Rapport;
 import com.mediscreen.patient.exception.ResourceAlreadyExistException;
 import com.mediscreen.patient.exception.ResourceNotFoundException;
 import com.mediscreen.patient.service.IPatientService;
@@ -16,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -427,5 +430,28 @@ public class PatientControllerTest {
         } catch (Exception e) {
             logger.error("Error in MockMvc", e);
         }
+    }
+
+    @Test
+    public void getPatientReport() {
+        //ARRANGE
+        Patient patientTest = new Patient("PatientTestLastName", "PatientTestFirstName", LocalDate.of(2000,01,01), Sex.M, "PatientTestHomeAddress","111-111-1111");
+        patientTest.setId(1);
+
+        Rapport rapportTest = new Rapport( "PatientTestLastName", "PatientTestFirstName", Sex.M, ChronoUnit.YEARS.between(LocalDate.of(2000,01,01), LocalDate.now()), Assessment.None);
+
+        doReturn(rapportTest).when(mockPatientService).getPatientRapport(1L);
+
+        //ACT & ASSERT
+        try {
+            mockMvc.perform(get("/patients/rapport/1"))
+                    .andExpect(status().isOk())
+                    .andExpect(model().attribute("rapport", rapportTest))
+                    .andExpect(view().name("patients/rapport"));
+        } catch (Exception e) {
+            logger.error("Error in MockMvc", e);
+        }
+
+        verify(mockPatientService, times(1)).getPatientRapport(1L);
     }
 }
