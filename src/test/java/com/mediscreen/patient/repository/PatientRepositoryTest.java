@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ActiveProfiles("test")
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@Sql({"/cleandb-test.sql","/data-test.sql"})
 public class PatientRepositoryTest {
 
     @Autowired

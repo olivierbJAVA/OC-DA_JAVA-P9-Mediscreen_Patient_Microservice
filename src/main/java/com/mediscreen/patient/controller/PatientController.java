@@ -78,7 +78,6 @@ public class PatientController {
 
         logger.info("Success : patient with last name {} and first name {} found", lastName, firstName);
 
-        //return new ResponseEntity<>(patient, HttpStatus.FOUND);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
@@ -97,7 +96,6 @@ public class PatientController {
 
         logger.info("Success : patient with id {} found", id);
 
-        //return new ResponseEntity<>(patient, HttpStatus.FOUND);
         return new ResponseEntity<>(patient, HttpStatus.OK);
     }
 
@@ -236,18 +234,7 @@ public class PatientController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
         Patient patientToAdd = new Patient(family, given, dateOfBirth, sex, address, phone);
-/*
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
 
-        Set<ConstraintViolation<Patient>> violations = validator.validate(patientToAdd);
-
-        if (!violations.isEmpty()) {
-            logger.error("Error in fields validation : new patientToAdd not created");
-
-            throw new ResourceAlreadyExistException(family, given);
-        }
-*/
         patientService.createPatient(patientToAdd);
 
         logger.info("Success : new patientToAdd created");
@@ -257,21 +244,6 @@ public class PatientController {
 
         return ResponseEntity.created(location).build();
     }
-
-/*
-    @GetMapping("/patients/notes/{id}")
-    public ModelAndView getPatientNotes(@PathVariable("id") Long id) {
-
-        Patient patient = patientService.findPatientById(id);
-
-        logger.info("Request : GET /patients/notes with lastName={} and firstName={}", patient.getLastName(), patient.getFirstName());
-
-        String redirectedURL = "http://localhost:8082/patHistoryByPatientLastNameAndFirstName?lastName=" + patient.getLastName() + "&firstName=" + patient.getFirstName();
-
-        return new ModelAndView("redirect:" + redirectedURL);
-
-    }
-*/
 
     /**
      * Method managing the GET "/notes/{lastName}/{firstName}" endpoint HTTP request to redirect to the patient notes view in the Mediscreen Note Microservice

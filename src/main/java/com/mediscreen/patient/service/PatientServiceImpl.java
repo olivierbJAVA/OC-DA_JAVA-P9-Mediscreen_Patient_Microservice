@@ -117,8 +117,6 @@ public class PatientServiceImpl implements IPatientService {
      */
     @Override
     public Rapport getPatientRapport(long id){
-
         return rapportProxy.getPatientRapportById(id);
-
     }
 }
