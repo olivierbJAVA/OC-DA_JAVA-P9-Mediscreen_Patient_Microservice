@@ -1,4 +1,4 @@
-# Mediscreen - Patient application
+# Mediscreen - Patient Microservice
 Welcome to Mediscreen !
 
 - Mediscreen is a medical company specialized in diseases diagnosis
