@@ -77,7 +77,7 @@ Three Spring profiles are available for each following phase :
 There is a global Spring configuration properties file : application.properties, and a dedicated configuration properties file for each profile : application-*profileName*.properties. 
 These files are stored in the src/main/resources directory for PROD and DEV profiles and in the src/test/resources directory for the TEST profile.
 
-The URL (hostname + port) for the Note and Rapport Microservices can be configured in these files.
+The URL (hostname + port) for the Note and Rapport Microservices communication can be configured in these files.
 
 ### DataBase creation and initialization
 
