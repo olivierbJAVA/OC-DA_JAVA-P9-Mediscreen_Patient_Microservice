@@ -83,7 +83,7 @@ The URL (hostname + port) for the Note and Rapport Microservices communication c
 
 The username and password for connection to the database are stored in the configuration application-*profileName*.properties files. You must fill these properties files with your own username and password.
 
-For the DEV profile, the database is initialized with some patients. This is done using the file : data-dev.sql (automatically run by SpringBoot).
+For the DEV profile, the database is initialized with some patients. This is done using the file : *data-dev.sql* (automatically run by SpringBoot).
 
 >During installing, application running or tests launching you may have an issue (depending on your configuration) related to Time zone configuration. It is an issue due the configuration of MySQL server.
 
@@ -99,7 +99,7 @@ You can run the Microservice in an IDE or in Docker containers :
 
 ### Endpoints
 
-For information about EndPoints that are exposed by the Mediscreen Patient Microservice, please refer to the document located in this repository called : 
+For information about EndPoints that are exposed by the Mediscreen Patient Microservice, please refer to the document located in this repository called : *Specifications_API-REST_Sprint1-PATIENT*
 
 ### Docker container deployment
 
