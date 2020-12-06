@@ -64,6 +64,8 @@ You will find below a step by step explanation that tell you how to get a develo
 4.Install Docker + Docker-Compose :
 <https://docs.docker.com/get-docker/>
 
+>Please note that the application has been developed with the IntelliJ IDE.
+
 ### Profiles and Configuration
 
 Three Spring profiles are available for each following phase :
@@ -95,8 +97,6 @@ You can run the Microservice in an IDE or in Docker containers.
 - To run the Microservice in an IDE, please use the DEV profile.  
 - To run the Microservice in Docker containers, please use the PROD profile.  
 
->Please note that the application has been developed with the IntelliJ IDE.
-
 ### Endpoints
 
 For information about EndPoints that are exposed by the Mediscreen Patient Microservice, please refer to the document located in this repository called : 
@@ -117,7 +117,7 @@ This will :
 - Create a dedicated Docker bridge network to enable their communication 
 - Map the directory containing the MySQL data in an external directory so that data are note lost if container is deleted
 
-In order to run the whole application, i.e. the 3 Microservices, you can use the *docker-compose.yml* file that is located in the Rapport Microservice repository.
+>In order to run the whole application, i.e. the 3 Microservices, you must use the *docker-compose.yml* file that is located in the Rapport Microservice repository.
  
 ### Tests
 
