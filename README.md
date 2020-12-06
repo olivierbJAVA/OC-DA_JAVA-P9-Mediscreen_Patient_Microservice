@@ -93,9 +93,9 @@ For the DEV profile, the database is initialized with some patients. This is don
 
 ### Microservice running
 
-You can run the Microservice in an IDE or in Docker containers.
-- To run the Microservice in an IDE, please use the DEV profile.  
-- To run the Microservice in Docker containers, please use the PROD profile.  
+You can run the Microservice in an IDE or in Docker containers :
+- To run the Microservice in an IDE, you must use the DEV profile.  
+- To run the Microservice in Docker containers, you must use the PROD profile.  
 
 ### Endpoints
 
