@@ -34,11 +34,11 @@ FrontEnd side :
 - HTML/CSS + Bootstrap for the views (User Interface)
 - Thymeleaf as template engine
 
-Microservices communicate using REST APIs.
+Microservices communicate using REST APIs and Feign HTTP client.
 
 ### Getting Started
 
-The following instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+The following instructions will get you a copy of the project up and running on your local machine.
 
 You need to install the following software :
 
@@ -89,11 +89,11 @@ For the DEV profile, the database is initialized with some patients. This is don
 
 >This line must be added in the [mysqld] section of the configuration file and may be adapted to your own local timezone obviously.
 
-### Application running
+### Microservice running
 
-If you want to run the application in an IDE, please use the DEV profile.  
-  
-If you want to run the application in Docker containers, please use the PROD profile.  
+You can run the Microservice in an IDE or in Docker containers.
+- To run the Microservice in an IDE, please use the DEV profile.  
+- To run the Microservice in Docker containers, please use the PROD profile.  
 
 >Please note that the application has been developed with the IntelliJ IDE.
 
@@ -103,7 +103,7 @@ For information about EndPoints that are exposed by the Mediscreen Patient Micro
 
 ### Docker container deployment
 
-A Dockerfile is present in this repository in order to deploy the application in a Docker container.
+A Dockerfile is present in this repository in order to deploy the Microservice in a Docker container.
 >In order to build a Docker Image using this Dockerfile, please use the following command line (in the *Dockerfile* directory) :
 `docker build -t patient .`
 
